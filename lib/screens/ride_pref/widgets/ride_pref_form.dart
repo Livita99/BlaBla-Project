@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../../model/ride/locations.dart';
 import '../../../model/ride_pref/ride_pref.dart';
+import '../../../service/locations_service.dart';
 import '../../../theme/theme.dart';
 import '../../../widgets/inputs/bla_button.dart';
+import '../../../widgets/inputs/location_picker.dart';
 
 ///
-/// A Ride Preference From is a view to select:
-///   - A depcarture location
+/// A Ride Preference Form is a view to select:
+///   - A departure location
 ///   - An arrival location
 ///   - A date
 ///   - A number of seats
@@ -29,10 +31,12 @@ class _RidePrefFormState extends State<RidePrefForm> {
   Location? arrival;
   late int requestedSeats;
 
+  // List of locations for the dropdown menus
+  final List<Location> locations = LocationsService.availableLocations;
+
   // ----------------------------------
   // Initialize the Form attributes
   // ----------------------------------
-
   @override
   void initState() {
     super.initState();
@@ -45,6 +49,27 @@ class _RidePrefFormState extends State<RidePrefForm> {
   // ----------------------------------
   // Handle events
   // ----------------------------------
+  void _showLocationPicker(BuildContext context, bool isDeparture) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: EdgeInsets.all(0),
+          child: LocationPicker(
+            onLocationSelected: (Location location) {
+              setState(() {
+                if (isDeparture) {
+                  departure = location;
+                } else {
+                  arrival = location;
+                }
+              });
+            },
+          ),
+        );
+      },
+    );
+  }
 
   void _showFullScreenDialog(BuildContext context) {
     showDialog(
@@ -83,10 +108,6 @@ class _RidePrefFormState extends State<RidePrefForm> {
   }
 
   // ----------------------------------
-  // Compute the widgets rendering
-  // ----------------------------------
-
-  // ----------------------------------
   // Build the widgets
   // ----------------------------------
   @override
@@ -102,36 +123,56 @@ class _RidePrefFormState extends State<RidePrefForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: Icon(Icons.radio_button_unchecked,
-                  color: BlaColors.textLight),
-              title: Text('Leaving from',
-                  style:
-                      BlaTextStyles.body.copyWith(color: BlaColors.textLight)),
-              onTap: () => _showFullScreenDialog(context),
+              leading: Icon(
+                Icons.radio_button_unchecked,
+                color: departure != null
+                    ? BlaColors.textNormal
+                    : BlaColors.textLight,
+              ),
+              title: Text(
+                departure?.name ?? 'Leaving from',
+                style: BlaTextStyles.body.copyWith(
+                  color: departure != null
+                      ? BlaColors.textNormal
+                      : BlaColors.textLight,
+                ),
+              ),
+              onTap: () => _showLocationPicker(context, true),
             ),
             Divider(),
             ListTile(
-              leading: Icon(Icons.radio_button_unchecked,
-                  color: BlaColors.textLight),
-              title: Text('Going to',
-                  style:
-                      BlaTextStyles.body.copyWith(color: BlaColors.textLight)),
-              onTap: () => _showFullScreenDialog(context),
+              leading: Icon(
+                Icons.radio_button_unchecked,
+                color: arrival != null
+                    ? BlaColors.textNormal
+                    : BlaColors.textLight,
+              ),
+              title: Text(
+                arrival?.name ?? 'Going to',
+                style: BlaTextStyles.body.copyWith(
+                  color: arrival != null
+                      ? BlaColors.textNormal
+                      : BlaColors.textLight,
+                ),
+              ),
+              onTap: () => _showLocationPicker(context, false),
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.calendar_today, color: BlaColors.textLight),
-              title: Text('Today',
-                  style:
-                      BlaTextStyles.body.copyWith(color: BlaColors.textLight)),
+              title: Text(
+                'Today',
+                style: BlaTextStyles.body.copyWith(color: BlaColors.textLight),
+              ),
               onTap: () => _showFullScreenDialog(context),
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.person, color: BlaColors.textLight),
-              title: Text('1',
-                  style:
-                      BlaTextStyles.body.copyWith(color: BlaColors.textLight)),
+              title: Text(
+                '1',
+                style: BlaTextStyles.body.copyWith(color: BlaColors.textLight),
+              ),
               onTap: () => _showFullScreenDialog(context),
             ),
             SizedBox(height: 16),
@@ -140,7 +181,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
               child: BlaButton(
                 label: 'Search',
                 buttonType: BlaButtonType.primary,
-                onPressed: () => _submitForm(),
+                onPressed: _submitForm,
               ),
             ),
           ],
