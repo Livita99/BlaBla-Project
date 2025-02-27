@@ -5,6 +5,7 @@ import '../../../service/locations_service.dart';
 import '../../../theme/theme.dart';
 import '../../../widgets/inputs/bla_button.dart';
 import '../../../widgets/inputs/location_picker.dart';
+import '../../../utils/animations_util.dart';
 
 ///
 /// A Ride Preference Form is a view to select:
@@ -50,24 +51,20 @@ class _RidePrefFormState extends State<RidePrefForm> {
   // Handle events
   // ----------------------------------
   void _showLocationPicker(BuildContext context, bool isDeparture) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          insetPadding: EdgeInsets.all(0),
-          child: LocationPicker(
-            onLocationSelected: (Location location) {
-              setState(() {
-                if (isDeparture) {
-                  departure = location;
-                } else {
-                  arrival = location;
-                }
-              });
-            },
-          ),
-        );
-      },
+    Navigator.of(context).push(
+      AnimationUtils.createBottomToTopRoute(
+        LocationPicker(
+          onLocationSelected: (Location location) {
+            setState(() {
+              if (isDeparture) {
+                departure = location;
+              } else {
+                arrival = location;
+              }
+            });
+          },
+        ),
+      ),
     );
   }
 
