@@ -1,9 +1,9 @@
-import 'package:week_3_blabla_project/model/ride/locations.dart';
 import 'package:week_3_blabla_project/model/ride/ride.dart';
 import 'package:week_3_blabla_project/model/ride_pref/ride_pref.dart';
-import 'package:week_3_blabla_project/model/user/user.dart';
 import 'package:week_3_blabla_project/service/rides_service.dart';
 import 'package:week_3_blabla_project/repository/rides_repository.dart';
+import 'package:week_3_blabla_project/model/ride/locations.dart';
+import 'package:week_3_blabla_project/model/user/user.dart';
 
 class MockRidesRepository implements RidesRepository {
   final List<Ride> _rides = [
@@ -18,11 +18,11 @@ class MockRidesRepository implements RidesRepository {
         lastName: 'Sok',
         email: 'kannika@example.com',
         phone: '123456789',
-        profilePicture: 'path/to/profile/picture',
+        profilePicture: 'https://randomuser.me/api/portraits/women/2.jpg',
         verifiedProfile: true,
       ),
       availableSeats: 2,
-      pricePerSeat: 10,
+      pricePerSeat: 10.0,
       acceptPets: false,
     ),
     Ride(
@@ -36,11 +36,11 @@ class MockRidesRepository implements RidesRepository {
         lastName: 'Sok',
         email: 'chaylim@example.com',
         phone: '123456789',
-        profilePicture: '"https://randomuser.me/api/portraits/men/1.jpg"',
+        profilePicture: 'https://randomuser.me/api/portraits/men/1.jpg',
         verifiedProfile: true,
       ),
       availableSeats: 0,
-      pricePerSeat: 12,
+      pricePerSeat: 10.0,
       acceptPets: false,
     ),
     Ride(
@@ -54,12 +54,12 @@ class MockRidesRepository implements RidesRepository {
         lastName: 'Sok',
         email: 'mengtech@example.com',
         phone: '123456789',
-        profilePicture: '"https://randomuser.me/api/portraits/men/2.jpg"',
+        profilePicture: 'https://randomuser.me/api/portraits/men/2.jpg',
         verifiedProfile: true,
       ),
       availableSeats: 1,
-      pricePerSeat: 10,
-      acceptPets: false,
+      pricePerSeat: 10.0,
+      acceptPets: true,
     ),
     Ride(
       departureLocation:
@@ -72,12 +72,12 @@ class MockRidesRepository implements RidesRepository {
         lastName: 'Sok',
         email: 'limhao@example.com',
         phone: '123456789',
-        profilePicture: '"https://randomuser.me/api/portraits/men/3.jpg"',
+        profilePicture: 'https://randomuser.me/api/portraits/men/3.jpg',
         verifiedProfile: true,
       ),
       availableSeats: 2,
-      pricePerSeat: 9,
-      acceptPets: true,
+      pricePerSeat: 10.0,
+      acceptPets: false,
     ),
     Ride(
       departureLocation:
@@ -90,11 +90,11 @@ class MockRidesRepository implements RidesRepository {
         lastName: 'Sok',
         email: 'sovanda@example.com',
         phone: '123456789',
-        profilePicture: '"https://randomuser.me/api/portraits/women/1.jpg"',
+        profilePicture: 'https://randomuser.me/api/portraits/men/4.jpg',
         verifiedProfile: true,
       ),
       availableSeats: 1,
-      pricePerSeat: 10,
+      pricePerSeat: 10.0,
       acceptPets: false,
     ),
   ];
