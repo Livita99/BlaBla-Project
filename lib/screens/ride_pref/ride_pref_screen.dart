@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:week_3_blabla_project/service/locations_service.dart';
 
 import '../../model/ride_pref/ride_pref.dart';
 import '../../service/ride_prefs_service.dart';
@@ -17,31 +18,33 @@ const String blablaHomeImagePath = 'assets/images/blabla_home.png';
 /// - Or select a last entered ride preferences and launch a search on it
 ///
 class RidePrefScreen extends StatefulWidget {
-  const RidePrefScreen({super.key});
+  final LocationsService locationsService;
+
+  const RidePrefScreen({super.key, required this.locationsService});
 
   @override
   State<RidePrefScreen> createState() => _RidePrefScreenState();
 }
 
 class _RidePrefScreenState extends State<RidePrefScreen> {
- 
   onRidePrefSelected(RidePreference newPreference) async {
-
     // 1 - Update the current preference
     RidePrefService.instance.setCurrentPreference(newPreference);
- 
+
     // 2 - Navigate to the rides screen (with a buttom to top animation)
-    await Navigator.of(context).push(AnimationUtils.createBottomToTopRoute(RidesScreen()));
-  
+    await Navigator.of(context)
+        .push(AnimationUtils.createBottomToTopRoute(RidesScreen()));
+
     // 3 - After wait  - Update the state   -- TODO MAKE IT WITH STATE MANAGEMENT
-    setState(() { });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-
-    RidePreference? currentRidePreference = RidePrefService.instance.currentPreference;
-    List<RidePreference> pastPreferences = RidePrefService.instance.getPastPreferences();
+    RidePreference? currentRidePreference =
+        RidePrefService.instance.currentPreference;
+    List<RidePreference> pastPreferences =
+        RidePrefService.instance.getPastPreferences();
 
     return Stack(
       children: [
@@ -68,7 +71,10 @@ class _RidePrefScreenState extends State<RidePrefScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // 2.1 Display the Form to input the ride preferences
-                  RidePrefForm(initialPreference: currentRidePreference, onSubmit: onRidePrefSelected),
+                  RidePrefForm(
+                      initialPreference: currentRidePreference,
+                      onSubmit: onRidePrefSelected,
+                      locationsService: widget.locationsService),
                   SizedBox(height: BlaSpacings.m),
 
                   // 2.2 Optionally display a list of past preferences

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:week_3_blabla_project/model/ride/locations.dart';
-
-import '../../service/locations_service.dart';
+import 'package:week_3_blabla_project/service/locations_service.dart';
 import '../../theme/theme.dart';
 
 ///
@@ -10,8 +9,10 @@ import '../../theme/theme.dart';
 class BlaLocationPicker extends StatefulWidget {
   final Location?
       initLocation; // The picker can be triguer with an existing location name
+  final LocationsService locationsService;
 
-  const BlaLocationPicker({super.key, this.initLocation});
+  const BlaLocationPicker(
+      {super.key, this.initLocation, required this.locationsService});
 
   @override
   State<BlaLocationPicker> createState() => _BlaLocationPickerState();
@@ -55,7 +56,7 @@ class _BlaLocationPickerState extends State<BlaLocationPicker> {
   }
 
   List<Location> getLocationsFor(String text) {
-    return LocationsService.availableLocations
+    return widget.locationsService.availableLocations
         .where((location) =>
             location.name.toUpperCase().contains(text.toUpperCase()))
         .toList();
