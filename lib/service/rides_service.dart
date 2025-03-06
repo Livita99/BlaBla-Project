@@ -1,6 +1,6 @@
 import 'package:week_3_blabla_project/model/ride_pref/ride_pref.dart';
+import 'package:week_3_blabla_project/repository/rides_repository.dart';
 
-import '../dummy_data/dummy_data.dart';
 import '../model/ride/ride.dart';
 
 ////
@@ -8,17 +8,29 @@ import '../model/ride/ride.dart';
 ///   - The list of available rides
 ///
 class RidesService {
+  static final RidesService _instance = RidesService._internal();
+  static late RidesRepository _repository;
 
-  static List<Ride> availableRides = fakeRides;  
+  RidesService._internal();
 
+  static void initialize(RidesRepository repository) {
+    _repository = repository;
+  }
+
+  factory RidesService() {
+    return _instance;
+  }
 
   ///
   ///  Return the relevant rides, given the passenger preferences
   ///
-  static List<Ride> getRidesFor(RidePreference preferences) {
- 
-    // For now, just a test
-    return availableRides.where( (ride) => ride.departureLocation == preferences.departure && ride.arrivalLocation == preferences.arrival).toList();
+  List<Ride> getRides(RidePreference preference, RidesFilter? filter) {
+    return _repository.getRides(preference, filter);
   }
- 
+}
+
+class RidesFilter {
+  final bool petAccepted;
+
+  RidesFilter({required this.petAccepted});
 }
