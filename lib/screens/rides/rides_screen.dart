@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:week_3_blabla_project/screens/rides/widgets/ride_pref_bar.dart';
+import 'package:week_3_blabla_project/screens/rides/widgets/ride_pref_modal.dart';
+import 'package:week_3_blabla_project/service/locations_service.dart';
 import 'package:week_3_blabla_project/service/ride_prefs_service.dart';
 
 import '../../model/ride/ride.dart';
@@ -42,6 +44,22 @@ class _RidesScreenState extends State<RidesScreen> {
     // TODO 9 :  After pop, we should get the new current pref from the modal
 
     // TODO 10 :  Then we should update the service current pref,   and update the view
+
+    final newPreference = await Navigator.of(context).push<RidePreference>(
+      MaterialPageRoute(
+        builder: (context) => RidePrefModal(
+          initialPreference: currentPreference,
+          locationsService: LocationsService.instance,
+        ),
+      ),
+    );
+
+    if (newPreference != null) {
+      setState(() {
+        currentPreference = newPreference;
+        RidePrefService.instance.setCurrentPreference(newPreference);
+      });
+    }
   }
 
   void onFilterPressed() {}

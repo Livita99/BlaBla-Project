@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:week_3_blabla_project/repository/mock/mock_ride_preferences_repository.dart';
-import 'package:week_3_blabla_project/repository/mock/mock_locations_repository.dart';
 import 'package:week_3_blabla_project/repository/mock/mock_rides_repository.dart';
 import 'package:week_3_blabla_project/service/locations_service.dart';
 import 'package:week_3_blabla_project/service/rides_service.dart';
@@ -11,24 +10,22 @@ import 'theme/theme.dart';
 void main() {
   // 1 - Initialize the services
   RidePrefService.initialize(MockRidePreferencesRepository());
-  final locationsService = LocationsService(MockLocationsRepository());
   RidesService.initialize(MockRidesRepository());
 
   // 2- Run the UI
-  runApp(MyApp(locationsService: locationsService));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final LocationsService locationsService;
-
-  const MyApp({super.key, required this.locationsService});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      home: Scaffold(body: RidePrefScreen(locationsService: locationsService)),
+      home: Scaffold(
+          body: RidePrefScreen(locationsService: LocationsService.instance)),
     );
   }
 }
